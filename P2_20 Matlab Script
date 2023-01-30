@@ -1,0 +1,92 @@
+%*************************************************************************
+% Assignment: Reliability Engineering HW 1
+% Problem 2.6: Use MATLAB to do problem 2.20
+% 2.20) Time to failure of a typical household refrigerator has the        
+% following PDF:
+% 
+% f(t) =  0.003t^2 - 0.06t - 0.3        0 <= t <= 10 years
+%         0                             elsewhere
+%
+%   a) What is the reliability of the refrigerator for the first year?
+
+%   b)Determine the design life if a 0.90 reliability is required.
+
+%   c)Find the hazard rate function. Is it increasing or decreasing
+
+%   d)The company claims the appliance is highly reliable by quoting the MTTF.
+%   What is the MTTF? What percent of the refrigerators will survive the MTTF?
+
+%   e)The company has a 1-month Warranty period. What is the probability 
+%   that a refrigerator will fail during the first month? 
+%   Given the refrigerator has survived its first month (the warrenty period), 
+%   what is the probability that it will survive the rest of the year?
+
+%   f) Find the most likely failure time.
+
+%**************************************************************************
+% intialize 
+clear all; 
+clf
+clc
+
+% make time (t) a symbolic variable
+syms t;
+
+f = 0.003*t^2-0.06*t -0.3; 
+
+
+% the following produces a plot of f over the range of t = 0 to 10
+figure (1);
+ezplot(f, [0, 10]);
+
+
+
+% -------------------------------------------------------------------------
+%   a) What is the reliability of the refrigerator for the first year?
+F = int(f, t, 0, t);    %calculates F(t) 
+R = 1- F;               %caluclates R(t) from F(t)
+
+figure(2)
+ezplot(R, [0,10]);
+
+
+% -------------------------------------------------------------------------
+%   b)Determine the design life if a 0.90 reliability is required.
+
+% for the design life as requested, we want to solve R(t) = 0.90
+% for t
+ 
+t_DL = double(solve(R - 0.90, t));
+display('The 95% design life is the positive value selected from...');
+t_DL
+
+
+
+% -------------------------------------------------------------------------
+%   c)Find the hazard rate function. Is it increasing or decreasing
+
+h = f / R;              %Caluclates h(t) hazard rate
+figure (3)              %Prepares Polt for h(t)
+ezplot(h, [0,10]);      %plots h(t)
+
+% -------------------------------------------------------------------------
+%   d)The company claims the appliance is highly reliable by quoting the MTTF.
+%   What is the MTTF? What percent of the refrigerators will survive the MTTF?
+
+MTTF = double(int(R, t, 0, 10));
+fprintf('\n The MTTF is %4.2f years. \n', MTTF);
+
+
+
+% -------------------------------------------------------------------------
+%   e)The company has a 1-month Warranty period. What is the probability 
+%   that a refrigerator will fail during the first month? 
+%   Given the refrigerator has survived its first month (the warrenty period), 
+%   what is the probability that it will survive the rest of the year?
+
+
+
+% -------------------------------------------------------------------------
+%   f) Find the most likely failure time.
+
+
