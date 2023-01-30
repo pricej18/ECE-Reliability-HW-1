@@ -1,0 +1,93 @@
+%*************************************************************
+% Assignment: Reliability Engineering HW 1
+% Problem 2.6: Use MATLAB to do problem 2.6
+% 2.5) The PDF for the time to failure in years of the drivetrain 
+% on a Regional Transit Authourity but is given by 
+
+% f(t) = 0.2 - 0.02t        0 <= t <= 10 years
+
+%   a) Show that the hazard rate function is increasing, indicating continuous 
+%   wear out over time
+
+%   b)Find the MTTF
+
+%   c)Find the median Time to failure
+
+%   d)Find the mod of Failure Distribution
+
+%   e)Compute the standard Deviation
+%**************************************************************
+
+% intialize 
+clear; 
+clc;
+clf;
+% ----------------------------------------------------------------------------------
+% Part a) Show that the hazard rate function is increasing, indicating continuous wear out over time
+
+
+% make time (t) a symbolic variable
+syms t;
+
+% specify failure density function f as per problem statement
+f = 0.2-0.02*t ;  % Failure Density Function 
+% use ezplot function to plot f from t = 0 to t = 10
+ezplot(f, [0, 10]);
+
+
+
+
+F = int(f, t, 0, t);    %calculates F(t) 
+R = 1- F;               %caluclates R(t) from F(t)
+
+figure(2)
+ezplot(F, [0,10]);
+hold on
+ezplot(R, [0,10]);
+
+
+h = f / R;              %Caluclates h(t) hazard rate
+figure (3)              %Prepares Polt for h(t)
+ezplot(h, [0,10]);      %plots h(t)
+
+
+% ----------------------------------------------------------------------------------
+%   b)Find the MTTF
+
+
+% using equation 2.8, the MTTF (mean time to failure) is 
+% found by integrating R with respect to t from 0 to 10
+% the double() function converts the integration to a numerical result
+
+MTTF = double(int(R, t, 0, 10));
+fprintf('\n The MTTF is %4.2f years. \n', MTTF);
+
+
+
+% ----------------------------------------------------------------------------------
+%   c)Find the median Time to failure
+% the median ia found as the time when R(t) = 0.5, i.e., the time when half
+% of the product has failed
+% the MATLAB solve equation for R(t) = 0.5, or put in the expected form
+% of R(t) - 0.5 = 0 is solved for t as
+t_med = double(solve(F - 0.5, t));
+fprintf('\n The median failure time is %4.2f years. \n', t_med);
+
+% ----------------------------------------------------------------------------------
+%   d)Find the mod of Failure Distribution
+fprintf('\n There is no Mode failure time as f(t) = constant. \n ');
+
+% ----------------------------------------------------------------------------------
+%   e)Compute the standard Deviation
+
+% the variance = var = sigma^2, which provides an indication of 
+% how much the real lifetime data will vary about MTTF is given by
+% from equation 2.12
+ 
+var  = double(int((t^2 * f), t, 0, 10)) - MTTF;
+fprintf('\n The variance  is %4.2f years. \n', var);
+ 
+% the standard deviation sigma is found as
+sigma = (var)^0.5;
+fprintf('\n sigma  is %4.2f years. \n', sigma);
+
