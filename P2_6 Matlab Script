@@ -75,7 +75,8 @@ fprintf('\n The median failure time is %4.2f years. \n', t_med);
 
 % ----------------------------------------------------------------------------------
 %   d)Find the mod of Failure Distribution
-fprintf('\n There is no Mode failure time as f(t) = constant. \n ');
+t_mode = max(f);
+fprintf('\n The mode is the maximum value of f(t) which is: 0 \n ', t_mode);
 
 % ----------------------------------------------------------------------------------
 %   e)Compute the standard Deviation
@@ -84,10 +85,18 @@ fprintf('\n There is no Mode failure time as f(t) = constant. \n ');
 % how much the real lifetime data will vary about MTTF is given by
 % from equation 2.12
  
-var  = double(int((t^2 * f), t, 0, 10)) - MTTF;
+ 
+% the variance = var = sigma^2, which provides an indication of 
+% how much the real lifetime data will vary about MTTF is given by
+% from equation 2.12
+ 
+var  = double(int((t^2* f -  MTTF), [0, 10])) ;
 fprintf('\n The variance  is %4.2f years. \n', var);
  
 % the standard deviation sigma is found as
 sigma = (var)^0.5;
 fprintf('\n sigma  is %4.2f years. \n', sigma);
+
+
+
 
